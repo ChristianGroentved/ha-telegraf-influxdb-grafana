@@ -4,9 +4,7 @@ services:
     image: influxdb:latest
     volumes:
       # Mount for influxdb data directory and configuration
-      - ./data:/var/lib/influxdb2
-      - ./config:/etc/influxdb2
-      - ./scripts:/docker-entrypoint-initdb.d 
+      - influx_data:/var/lib/influxdb2
     ports:
       - "8086:8086"
     environment:
@@ -38,4 +36,5 @@ services:
       - GF_SECURITY_ADMIN_USER=greatname
       - GF_SECURITY_ADMIN_PASSWORD=supersecretpass
 volumes:
+  influx_data:      
   grafana_data:
