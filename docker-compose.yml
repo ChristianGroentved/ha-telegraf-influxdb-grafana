@@ -22,6 +22,9 @@ services:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf
     depends_on:
       - influxdb
+    environment:
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
   grafana:
     image: grafana/grafana:latest
     ports:
