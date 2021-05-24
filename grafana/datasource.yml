@@ -6,9 +6,9 @@ datasources:
     access: proxy
     url: http://influxdb:8086
     secureJsonData:
-      token: mytoken
+      token: $INFLUXDB_TOKEN
     jsonData:
       version: Flux
-      organization: myorg
+      organization: $INFLUXDB_ORG
       defaultBucket: home_assistant
       tlsSkipVerify: true

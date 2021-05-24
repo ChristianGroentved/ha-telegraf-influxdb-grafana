@@ -3,24 +3,22 @@ services:
   influxdb:
     image: influxdb:latest
     volumes:
-      # Mount for influxdb data directory and configuration
       - influx_data:/var/lib/influxdb2
     ports:
       - "8086:8086"
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=greatname
-      - DOCKER_INFLUXDB_INIT_PASSWORD=supersecretpass
-      - DOCKER_INFLUXDB_INIT_ORG=myorg  
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}  
       - DOCKER_INFLUXDB_INIT_BUCKET=home_assistant
-      - DOCKER_INFLUXDB_INIT_RETENTION=30d  
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+      - DOCKER_INFLUXDB_INIT_RETENTION=14d  
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN}
   telegraf:
     image: telegraf
     links:
       - influxdb
     volumes:
-      # Mount for telegraf config
       - ./telegraf.conf:/etc/telegraf/telegraf.conf
     depends_on:
       - influxdb
@@ -34,8 +32,10 @@ services:
     depends_on:
       - influxdb
     environment:
-      - GF_SECURITY_ADMIN_USER=greatname
-      - GF_SECURITY_ADMIN_PASSWORD=supersecretpass
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}  
 volumes:
   influx_data:      
   grafana_data:
